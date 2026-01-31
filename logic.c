@@ -1,4 +1,5 @@
-typedef enum {LOW = 0, HIGH = 1} bit;
+#include "logic.h"
+
 extern int putchar(int);
 
 bit andGate(bit a, bit b){
@@ -38,11 +39,12 @@ void printBit(bit a){
     putchar(a ? '1' : '0');
 }
 
-
-typedef struct{
-    bit sum_out;
-    bit carry_out;
-} half_adder;
+void printByte(byte byte_a){ // this makes it so that the MSB is at left side, "human readable format!"
+    for (int i = 0; i < 8; i++){
+        printBit(byte_a.bits[i]);
+    }
+    putchar('\n');
+}
 
 half_adder halfAdder(bit a, bit b){
     half_adder result;
@@ -51,58 +53,46 @@ half_adder halfAdder(bit a, bit b){
     return result;
 }
 
-typedef struct{
-    bit sum_out;
-    bit carry_out;
-} full_adder;
-
 full_adder fullAdder(bit a, bit b, bit carry_in){
     full_adder result;
-    half_adder halfAdder1, halfAdder2;
+    half_adder h1 = halfAdder(a, b);
+    half_adder h2 = halfAdder(h1.sum_out, carry_in);
 
-    halfAdder1 = halfAdder(a, b);
-    halfAdder2 = halfAdder(halfAdder1.sum_out, carry_in);
-
-    result.sum_out = halfAdder2.sum_out;
-    result.carry_out = orGate(halfAdder1.carry_out, halfAdder2.carry_out);
+    result.sum_out = h2.sum_out;
+    result.carry_out = orGate(h1.carry_out, h2.carry_out);
 
     return result;
 }
 
-typedef struct{
-    bit bits[8];
-} byte;
-
-byte eightBitAdder(byte byte_a, byte byte_b, bit carry){
+byte eightBitAdder(byte byte_a, byte byte_b, bit carry, bit* carry_out){
     byte sum;
-    for(int i = 0; i < 8; i++){
+
+    for(int i = 7; i >= 0; i--){ // this makes it so that the MSB is in right side, "computer loop format!"
         full_adder result = fullAdder(byte_a.bits[i], byte_b.bits[i], carry);
         sum.bits[i] = result.sum_out;
         carry = result.carry_out;
     }
+
+    *carry_out = carry;
     return sum;
 }
 
-void printByte(byte byte_a){
-    for(int i = 7; i >= 0; i--){
-        printBit(byte_a.bits[i]);
+byte notByte(byte byte_a){
+    byte result;
+    for(int i = 0; i < 8; i++){
+        result.bits[i] = notGate(byte_a.bits[i]);
     }
+    return result;
 }
 
-int main(){
-    bit input_a = HIGH;
-    bit input_b = HIGH;
-    bit carry_in = LOW;
+byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out){
+    byte b_invert = notByte(byte_b);
+    bit carry_out;
 
-    byte byte_a, byte_b;
+    bit carry_in = notGate(borrow_in);
 
-    byte_a = {1,0,1,0,1,0,1,0};
+    byte result = eightBitAdder(byte_a, b_invert, carry_in, &carry_out);
 
-    full_adder result = fullAdder(input_a, input_b, carry_in);
-
-    putchar('C'); putchar('='); printBit(result.carry_out);
-    putchar('\n');
-    putchar('S'); putchar('='); printBit(result.sum_out);
-    putchar('\n');
-    return 0;
+    *borrow_out = notGate(carry_out);
+    return result;
 }
