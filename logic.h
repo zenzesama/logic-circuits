@@ -33,4 +33,12 @@ byte eightBitAdder(byte byte_a, byte byte_b, bit carry, bit* carry_out);
 byte notByte(byte byte_a);
 byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out);
 
+typedef struct{
+    bit q;
+    bit q_bar;
+}rs_flip_flop;
+
+rs_flip_flop newRsFlipFlop(void);
+void rsFlipFlop(rs_flip_flop* ff, bit r, bit s);
+
 #endif

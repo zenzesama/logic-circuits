@@ -96,3 +96,19 @@ byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out
     *borrow_out = notGate(carry_out);
     return result;
 }
+
+rs_flip_flop newRsFlipFlop(){
+    rs_flip_flop ff = {LOW, HIGH};
+    return ff;
+}
+
+void rsFlipFlop(rs_flip_flop* ff, bit r, bit s){
+    bit q, q_bar;
+    do{
+        q = norGate(r, ff->q_bar);
+        q_bar = norGate(s, q);
+        if(q == ff->q && q_bar == ff->q_bar) break;
+        ff->q = q;
+        ff->q_bar = q_bar;
+    }while(1);
+}
