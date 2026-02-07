@@ -46,6 +46,7 @@ void printByte(byte byte_a){ // this makes it so that the MSB is at left side, "
     putchar('\n');
 }
 
+
 half_adder halfAdder(bit a, bit b){
     half_adder result;
     result.carry_out = andGate(a, b);
@@ -97,6 +98,7 @@ byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out
     return result;
 }
 
+
 rs_flip_flop newRsFlipFlop(){
     rs_flip_flop ff = {LOW, HIGH};
     return ff;
@@ -111,4 +113,89 @@ void rsFlipFlop(rs_flip_flop* ff, bit r, bit s){
         ff->q = q;
         ff->q_bar = q_bar;
     }while(1);
+}
+
+
+d_flip_flop newDFlipFlop(){
+    d_flip_flop ff;
+    ff.rs_ff = newRsFlipFlop();
+    return ff;
+}
+
+void dFlipFlop(d_flip_flop* ff, bit data, bit clock){
+    bit s = andGate(clock, data);
+    bit r = andGate(clock, notGate(data));
+
+    rsFlipFlop(&ff->rs_ff, r, s);
+}
+
+
+eight_bit_latch newEightBitLatch(void){
+    eight_bit_latch latch;
+    for(int i = 0; i < 8; i++){
+        latch.flip_flops[i] = newDFlipFlop();
+    }
+    return latch;
+}
+
+void eightBitLatch(eight_bit_latch* latch, byte data, bit clock){
+    for(int i = 0; i < 8; i++){
+        dFlipFlop(&latch->flip_flops[i], data.bits[i], clock);
+    }
+}
+
+byte eightBitLatchOutput(eight_bit_latch* latch){
+    byte output;
+    for(int i = 0; i < 8; i++){
+        output.bits[i] = latch->flip_flops[i].rs_ff.q;
+    }
+    return output;
+}
+
+
+bit twoToOneSelector(bit a, bit b, bit select){
+    bit notSelect = notGate(select);
+    bit a_path = andGate(a, notSelect);
+    bit b_path = andGate(b, select);
+    return orGate(a_path, b_path);
+}
+
+byte eightBitTwoToOneSelector(byte a, byte b, bit select){
+    byte output;
+    for(int i = 0; i < 8; i++){
+        output.bits[i] = twoToOneSelector(a.bits[i], b.bits[i], select);
+    }
+    return output;
+}
+
+adding_machine newAddingMachine(void){
+    adding_machine machine;
+    machine.latch = newEightBitLatch();
+    byte zero = {{LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW}};
+    machine.switches_input = zero;
+    machine.select_switch = LOW;
+    machine.save_switch = LOW;
+    return machine;
+}
+
+void runAddingMachine(adding_machine* machine, byte switches_input, bit select_from_latch, bit save){
+    machine->switches_input = switches_input;
+    machine->select_switch = select_from_latch;
+
+    byte latch_output = eightBitLatchOutput(&machine->latch);
+    byte zero = {{LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW}};
+    byte selector_output = eightBitTwoToOneSelector(zero, latch_output, select_from_latch);
+    bit carry_out;
+    byte sum = eightBitAdder(switches_input, selector_output, LOW, &carry_out);
+    eightBitLatch(&machine->latch, sum, save);
+}
+
+byte getAddingMachineSum(adding_machine* machine){
+    byte switches = machine->switches_input;
+    byte latch_output = eightBitLatchOutput(&machine->latch);
+    byte zero = {{LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW}};
+    byte selector_output = eightBitTwoToOneSelector(zero, latch_output, machine->select_switch);
+
+    bit carry_out;
+    return eightBitAdder(switches, selector_output, LOW, &carry_out);
 }

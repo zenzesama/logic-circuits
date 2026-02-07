@@ -33,6 +33,7 @@ byte eightBitAdder(byte byte_a, byte byte_b, bit carry, bit* carry_out);
 byte notByte(byte byte_a);
 byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out);
 
+
 typedef struct{
     bit q;
     bit q_bar;
@@ -40,5 +41,38 @@ typedef struct{
 
 rs_flip_flop newRsFlipFlop(void);
 void rsFlipFlop(rs_flip_flop* ff, bit r, bit s);
+
+
+typedef struct{
+    rs_flip_flop rs_ff;
+}d_flip_flop;
+
+d_flip_flop newDFlipFlop(void);
+void dFlipFlop(d_flip_flop* ff, bit data, bit clock);
+
+
+typedef struct{
+    d_flip_flop flip_flops[8];
+}eight_bit_latch;
+
+eight_bit_latch newEightBitLatch(void);
+void eightBitLatch(eight_bit_latch* latch, byte data, bit clock);
+byte eightBitLatchOutput(eight_bit_latch* latch);
+
+
+bit twoToOneSelector(bit a, bit b, bit select);
+byte eightBitTwoToOneSelector(byte a, byte b, bit select);
+
+
+typedef struct{
+    eight_bit_latch latch;
+    byte switches_input;
+    bit select_switch;
+    bit save_switch;
+}adding_machine;
+
+adding_machine newAddingMachine(void);
+void runAddingMachine(adding_machine* machine, byte switches_input, bit select_from_latch, bit save);
+byte getAddingMachineSum(adding_machine* machine);
 
 #endif

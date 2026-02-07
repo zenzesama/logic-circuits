@@ -23,8 +23,16 @@ I will be writing a "devlog" each commit explaining the changes, new additions, 
 
   ![8-bit-subtractor](images/8-bit-subtractor.png)
 
-- **(1 February, 2027)** *added rs flipflop!*
+- **(1 February, 2026)** *added rs flipflop!*
   
   finally got a working model of a rs flipflop. I made a struct, a initializer and a some loop logic to make it work and follow the truth table. I think for each flip flop we are gonna need a loop. I am concerned as to how will these parts interact with each other, because I am at the 'An Assemblage of Memory' chapter of the book and all the components are comming to togeather to make a ram and in the following chapter we are gonna we making a alu. Might have to tweak each parts implementation a little. Lets see what happens!
 
   ![rs-flip-flop](images/rs-flipflop.png) ![rs-flip-flop](images/rs-flipflop-2.png)
+
+- **(7 February, 2026)** *added level triggered d flipflop and a adding machine*
+  
+  level triggered d flip flop was not much of a chllenge, just a initializer function and a update function. But after making this stupid adding machine. I think I should make a documentation of this. The logic of the adding machine and adding all these parts togeather like the latch, the selector, the adder and chaining outputs, this all took me over 2 hours. And out oft hose 2 hours I was just debugging for 1.5 hours. Had to write the mechanism of a paper and consult a lot of LLM's (tbh LLM's didn't even help much, I was fixing their code more than they were fixing me). I can see how the parts connect but I don't think I can remember that in the long run, so I will be making a documentation of this. Development will be paused until documentation is complete until where the project is at right now. I also have exams in 2 weeks so I should not be focusing much here. Just writing stuff feels like the correct thing to do. Also, I am actually not sure if the adder works correctly or not, there may be some edge case that I haven't accounted for, I will fix it (surely).
+
+  ![level-triggered-d-flipflop](images/level-triggered-d-flipflop.png)
+  ![2-to-1-selector](images/2-to-1-selector.png)
+  ![full-adding-machine](images/full-adding-machine.png)
