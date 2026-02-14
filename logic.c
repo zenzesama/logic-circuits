@@ -227,3 +227,63 @@ byte eightBitTwoToOneSelector(byte a, byte b, bit select){
     }
     return output;
 }
+
+/**
+ * @brief initializes a new adding machine
+ * 
+ * @return adding_machine the initialized machine
+ * 
+ * this creates a new adding machine with an empty latch
+ * and initializes the last_sum to zero
+ */
+adding_machine newAddingMachine(void){
+    adding_machine calc;
+    calc.latch = newEightBitLatch();
+
+    byte zero = {{0,0,0,0,0,0,0,0}};
+    calc.last_sum = zero;
+
+    return calc;
+}
+
+
+/**
+ * @brief runs the adding machine for one operation
+ * 
+ * @param calc pointer to the adding machine
+ * @param input the byte value to add (from switches)
+ * @param from_latch selector bit: LOW = add to zero, HIGH = add to latch value
+ * @param save clock bit: HIGH = save result to latch, LOW = just compute
+ * 
+ * this function:
+ * 1. reads the current latch value
+ * 2. selects between zero or latch value based on from_latch
+ * 3. adds input to the selected value
+ * 4. stores the sum
+ * 5. optionally saves to latch if save is HIGH
+ */
+void runAddingMachine(adding_machine* calc, byte input, bit from_latch, bit save){
+    byte latch_output = eightBitLatchOutput(&calc->latch);
+    
+    byte zero = {{0,0,0,0,0,0,0,0}};
+    byte selected = eightBitTwoToOneSelector(zero, latch_output, from_latch);
+
+    bit carry_out;
+    byte sum = eightBitAdder(input, selected, LOW, &carry_out);
+
+    calc->last_sum = sum;
+
+    eightBitLatch(&calc->latch, sum, save);
+}
+
+/**
+ * @brief gets the most recent computed sum from the adding machine
+ * 
+ * @param calc pointer to the adding machine
+ * @return byte the last computed sum
+ * 
+ * this returns the result of the most recent addition operation
+ */
+byte getAddingMachineSum(adding_machine* calc){
+    return calc->last_sum;
+}

@@ -63,16 +63,13 @@ byte eightBitLatchOutput(eight_bit_latch* latch);
 bit twoToOneSelector(bit a, bit b, bit select);
 byte eightBitTwoToOneSelector(byte a, byte b, bit select);
 
-
-typedef struct{
+typedef struct {
     eight_bit_latch latch;
-    byte switches_input;
-    bit select_switch;
-    bit save_switch;
+    byte last_sum;
 }adding_machine;
 
 adding_machine newAddingMachine(void);
-void runAddingMachine(adding_machine* machine, byte switches_input, bit select_from_latch, bit save);
-byte getAddingMachineSum(adding_machine* machine);
+void runAddingMachine(adding_machine* calc, byte input, bit from_latch, bit save);
+byte getAddingMachineSum(adding_machine* calc);
 
 #endif
