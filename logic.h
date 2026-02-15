@@ -72,4 +72,23 @@ adding_machine newAddingMachine(void);
 void runAddingMachine(adding_machine* calc, byte input, bit from_latch, bit save);
 byte getAddingMachineSum(adding_machine* calc);
 
+
+typedef struct {
+    d_flip_flop master;
+    d_flip_flop slave;
+    bit last_clock;
+}edge_triggered_d_flip_flop;
+
+edge_triggered_d_flip_flop newEdgeTriggeredDFlipFlop(void);
+void edgeTriggeredDFlipFlop(edge_triggered_d_flip_flop* ff, bit data, bit clock);
+
+typedef struct{
+    edge_triggered_d_flip_flop base_ff;
+    bit q;
+    bit q_bar;
+}edge_triggered_d_flip_flop_pc;
+
+edge_triggered_d_flip_flop_pc newEdgeTriggeredDFlipFlopPC(void);
+void edgeTriggeredDFlipFlopPC(edge_triggered_d_flip_flop_pc* ff, bit data, bit clock, bit preset, bit clear);
+
 #endif
