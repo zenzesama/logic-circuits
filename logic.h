@@ -91,4 +91,10 @@ typedef struct{
 edge_triggered_d_flip_flop_pc newEdgeTriggeredDFlipFlopPC(void);
 void edgeTriggeredDFlipFlopPC(edge_triggered_d_flip_flop_pc* ff, bit data, bit clock, bit preset, bit clear);
 
+byte hexToByte(char *hex);
+
+/*
+TODO: binary counter
+*/
+
 #endif

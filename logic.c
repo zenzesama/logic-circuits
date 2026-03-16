@@ -12,13 +12,13 @@
 #include "logic.h"
 
 /**
- * @brief this is a half adder that taked two bits and returns the takes in 2 bits
+ * @brief this is a half adder that takes in two bits and returns the half adder with modified state
  * 
  * @param a this is the first bit
  * @param b this is the second bit
  * @return half_adder this is the new state of the half adder
  * 
- * we first initialize a helf adder, then perform the calculations to get the carry and the sum.
+ * we first initialize a half adder, then perform the calculations to get the carry and the sum.
  * then in the half_adder structure, we store these carry and sum and return that half adder.
  */
 half_adder halfAdder(bit a, bit b){
