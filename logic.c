@@ -287,3 +287,79 @@ void runAddingMachine(adding_machine* calc, byte input, bit from_latch, bit save
 byte getAddingMachineSum(adding_machine* calc){
     return calc->last_sum;
 }
+
+/**
+ * @brief initializes a new 8-bit counter starting at 0
+ * 
+ * @return eight_bit_counter the initialized counter
+ */
+eight_bit_counter newEightBitCounter(void){
+    eight_bit_counter counter;
+    for(int i = 0; i < 8; i++){
+        counter.flip_flops[i] = newEdgeTriggeredDFlipFlop();
+        counter.flip_flops[i].slave.rs_ff.q = LOW;
+        counter.flip_flops[i].slave.rs_ff.q_bar = HIGH;
+        counter.flip_flops[i].master.rs_ff.q = LOW;
+        counter.flip_flops[i].master.rs_ff.q_bar = HIGH;
+    }
+    return counter;
+}
+
+/**
+ * @brief increments the counter by one (simulates one clock tick)
+ * 
+ * @param counter pointer to the counter to increment
+ * 
+ * this is a ripple counter where each flip-flop acts as a frequency divider.
+ * FF0 toggles every tick. each subsequent FF toggles on falling edges of the
+ * previous FF's output (HIGH to LOW transition). this creates an up counter.
+ */
+void tickEightBitCounter(eight_bit_counter* counter){
+    bit saved_q[8];
+    for(int i = 0; i < 8; i++){
+        saved_q[i] = counter->flip_flops[i].slave.rs_ff.q;
+    }
+    
+    // toggle FF0 (connected to external clock)
+    bit q_bar_0 = counter->flip_flops[0].slave.rs_ff.q_bar;
+    edgeTriggeredDFlipFlop(&counter->flip_flops[0], q_bar_0, LOW);
+    edgeTriggeredDFlipFlop(&counter->flip_flops[0], q_bar_0, HIGH);
+    
+    // toggle remaining FFs on falling edges
+    for(int i = 1; i < 8; i++){
+        bit prev_new_state = counter->flip_flops[i-1].slave.rs_ff.q;
+        
+        if(saved_q[i-1] == HIGH && prev_new_state == LOW){
+            bit current_q_bar = counter->flip_flops[i].slave.rs_ff.q_bar;
+            edgeTriggeredDFlipFlop(&counter->flip_flops[i], current_q_bar, LOW);
+            edgeTriggeredDFlipFlop(&counter->flip_flops[i], current_q_bar, HIGH);
+        }
+    }
+}
+
+/**
+ * @brief reads the current counter value
+ * 
+ * @param counter pointer to the counter
+ * @return byte the current count (0-255)
+ * 
+ * FF0 is LSB, FF7 is MSB
+ */
+byte getEightBitCounterValue(eight_bit_counter* counter){
+    byte value;
+    for(int i = 0; i < 8; i++){
+        value.bits[i] = counter->flip_flops[7-i].slave.rs_ff.q;
+    }
+    return value;
+}
+
+/**
+ * @brief resets the counter back to 0
+ * 
+ * @param counter pointer to the counter to reset
+ */
+void resetEightBitCounter(eight_bit_counter* counter){
+    for(int i = 0; i < 8; i++){
+        counter->flip_flops[i] = newEdgeTriggeredDFlipFlop();
+    }
+}

@@ -9,7 +9,7 @@
  * 
  */
 
-#include "../logic.h"
+#include "logic.h"
 #include "test_framework.h"
 
 /* Helper: compare two bytes, report failure per-bit with a label prefix */
@@ -20,7 +20,7 @@ static void assert_bytes_eq(byte expected, byte actual, const char* label) {
 
 static void test_add_to_zero(void) {
     adding_machine calc = newAddingMachine();
-    byte five = {{0,0,0,0,0,1,0,1}};
+    byte five = hexToByte("0x05");
 
     /* from_latch=LOW means add input to zero */
     runAddingMachine(&calc, five, LOW, HIGH);
@@ -30,9 +30,9 @@ static void test_add_to_zero(void) {
 
 static void test_accumulate(void) {
     adding_machine calc = newAddingMachine();
-    byte five  = {{0,0,0,0,0,1,0,1}};
-    byte three = {{0,0,0,0,0,0,1,1}};
-    byte eight = {{0,0,0,0,1,0,0,0}};
+    byte five  = hexToByte("0x05");
+    byte three = hexToByte("0x03");
+    byte eight = hexToByte("0x08");
 
     runAddingMachine(&calc, five,  LOW,  HIGH);  /* 0 + 5 = 5, save  */
     runAddingMachine(&calc, three, HIGH, HIGH);  /* 5 + 3 = 8, save  */
@@ -41,9 +41,9 @@ static void test_accumulate(void) {
 
 static void test_no_save(void) {
     adding_machine calc = newAddingMachine();
-    byte five  = {{0,0,0,0,0,1,0,1}};
-    byte seven = {{0,0,0,0,0,1,1,1}};
-    byte twelve = {{0,0,0,0,1,1,0,0}};
+    byte five  = hexToByte("0x05");
+    byte seven = hexToByte("0x07");
+    byte twelve = hexToByte("0x0C");
 
     runAddingMachine(&calc, five,  LOW,  HIGH);  /* save 5 */
     runAddingMachine(&calc, seven, HIGH, LOW);   /* compute 5+7 but don't save */
@@ -57,8 +57,8 @@ static void test_no_save(void) {
 
 static void test_reset(void) {
     adding_machine calc = newAddingMachine();
-    byte hundred = {{0,1,1,0,0,1,0,0}};
-    byte twenty  = {{0,0,0,1,0,1,0,0}};
+    byte hundred = hexToByte("0x64");
+    byte twenty  = hexToByte("0x14");
 
     runAddingMachine(&calc, hundred, LOW,  HIGH);  /* save 100 */
     runAddingMachine(&calc, twenty,  HIGH, HIGH);  /* 100+20 = 120 */
@@ -70,9 +70,9 @@ static void test_reset(void) {
 static void test_overflow(void) {
     adding_machine calc = newAddingMachine();
     /* 200 + 100 = 300, wraps to 44 (300 - 256) */
-    byte twohundred = {{1,1,0,0,1,0,0,0}};
-    byte hundred    = {{0,1,1,0,0,1,0,0}};
-    byte forty_four = {{0,0,1,0,1,1,0,0}};
+    byte twohundred = hexToByte("0xC8");
+    byte hundred    = hexToByte("0x64");
+    byte forty_four = hexToByte("0x2C");
 
     runAddingMachine(&calc, twohundred, LOW,  HIGH);
     runAddingMachine(&calc, hundred,    HIGH, LOW);   /* compute, don't save */

@@ -9,14 +9,14 @@
  * 
  */
 
-#include "../logic.h"
+#include "logic.h"
 #include "test_framework.h"
 
 static void test_latch_write_and_read(void) {
     eight_bit_latch latch = newEightBitLatch();
 
-    /* Write 0b10110010 (178) and read it back */
-    byte val = {{1,0,1,1,0,0,1,0}};
+    /* Write 0xB2 (178) and read it back */
+    byte val = hexToByte("0xB2");
     eightBitLatch(&latch, val, HIGH);
     byte out = eightBitLatchOutput(&latch);
     for (int i = 0; i < 8; i++)
@@ -27,11 +27,11 @@ static void test_latch_hold(void) {
     eight_bit_latch latch = newEightBitLatch();
 
     /* Write 42 */
-    byte forty_two = {{0,0,1,0,1,0,1,0}};
+    byte forty_two = hexToByte("0x2A");
     eightBitLatch(&latch, forty_two, HIGH);
 
     /* Present a different value but clock LOW: latch should not update */
-    byte ff = {{1,1,1,1,1,1,1,1}};
+    byte ff = hexToByte("0xFF");
     eightBitLatch(&latch, ff, LOW);
 
     byte out = eightBitLatchOutput(&latch);
@@ -42,8 +42,8 @@ static void test_latch_hold(void) {
 static void test_latch_overwrite(void) {
     eight_bit_latch latch = newEightBitLatch();
 
-    byte first  = {{0,0,0,0,1,1,1,1}};  /* 15 */
-    byte second = {{1,1,1,1,0,0,0,0}};  /* 240 */
+    byte first  = hexToByte("0x0F");  /* 15 */
+    byte second = hexToByte("0xF0");  /* 240 */
 
     eightBitLatch(&latch, first,  HIGH);
     eightBitLatch(&latch, second, HIGH);
@@ -56,8 +56,8 @@ static void test_latch_overwrite(void) {
 static void test_latch_zero(void) {
     eight_bit_latch latch = newEightBitLatch();
 
-    byte ff   = {{1,1,1,1,1,1,1,1}};
-    byte zero = {{0,0,0,0,0,0,0,0}};
+    byte ff   = hexToByte("0xFF");
+    byte zero = hexToByte("0x00");
 
     eightBitLatch(&latch, ff,   HIGH);
     eightBitLatch(&latch, zero, HIGH);

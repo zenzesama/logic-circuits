@@ -92,9 +92,15 @@ edge_triggered_d_flip_flop_pc newEdgeTriggeredDFlipFlopPC(void);
 void edgeTriggeredDFlipFlopPC(edge_triggered_d_flip_flop_pc* ff, bit data, bit clock, bit preset, bit clear);
 
 byte hexToByte(char *hex);
+int byteToDecimal(byte b);
 
-/*
-TODO: binary counter
-*/
+typedef struct{
+    edge_triggered_d_flip_flop flip_flops[8];
+}eight_bit_counter;
+
+eight_bit_counter newEightBitCounter(void);
+void tickEightBitCounter(eight_bit_counter* counter);
+byte getEightBitCounterValue(eight_bit_counter* counter);
+void resetEightBitCounter(eight_bit_counter* counter);
 
 #endif

@@ -9,7 +9,7 @@
  * 
  */
 
-#include "../logic.h"
+#include "logic.h"
 #include "test_framework.h"
 
 static void test_two_to_one_selector(void) {
@@ -27,8 +27,8 @@ static void test_two_to_one_selector(void) {
 }
 
 static void test_eight_bit_two_to_one_selector(void) {
-    byte a = {{1,0,1,0,1,0,1,0}};  /* 0xAA */
-    byte b = {{0,1,0,1,0,1,0,1}};  /* 0x55 */
+    byte a = hexToByte("0xAA");
+    byte b = hexToByte("0x55");
 
     /* Select=0: should return a */
     byte result = eightBitTwoToOneSelector(a, b, LOW);

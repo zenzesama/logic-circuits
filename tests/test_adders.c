@@ -9,7 +9,7 @@
  * 
  */
 
-#include "../logic.h"
+#include "logic.h"
 #include "test_framework.h"
 
 static void test_half_adder(void) {
@@ -60,18 +60,18 @@ static void test_eight_bit_adder(void) {
     bit carry_out;
 
     /* 5 + 3 = 8 */
-    byte five  = {{0,0,0,0,0,1,0,1}};
-    byte three = {{0,0,0,0,0,0,1,1}};
-    byte eight = {{0,0,0,0,1,0,0,0}};
+    byte five  = hexToByte("0x05");
+    byte three = hexToByte("0x03");
+    byte eight = hexToByte("0x08");
     byte result = eightBitAdder(five, three, LOW, &carry_out);
     for (int i = 0; i < 8; i++)
         ASSERT_BIT_EQ(eight.bits[i], result.bits[i], "5+3=8");
     ASSERT_BIT_EQ(LOW, carry_out, "5+3 no carry");
 
     /* 255 + 1 = 0, carry out */
-    byte ff  = {{1,1,1,1,1,1,1,1}};
-    byte one = {{0,0,0,0,0,0,0,1}};
-    byte zero = {{0,0,0,0,0,0,0,0}};
+    byte ff  = hexToByte("0xFF");
+    byte one = hexToByte("0x01");
+    byte zero = hexToByte("0x00");
     result = eightBitAdder(ff, one, LOW, &carry_out);
     for (int i = 0; i < 8; i++)
         ASSERT_BIT_EQ(zero.bits[i], result.bits[i], "255+1 overflow");
@@ -88,26 +88,26 @@ static void test_eight_bit_subtractor(void) {
     bit borrow_out;
 
     /* 10 - 3 = 7 */
-    byte ten   = {{0,0,0,0,1,0,1,0}};
-    byte three = {{0,0,0,0,0,0,1,1}};
-    byte seven = {{0,0,0,0,0,1,1,1}};
+    byte ten   = hexToByte("0x0A");
+    byte three = hexToByte("0x03");
+    byte seven = hexToByte("0x07");
     byte result = eightBitSubtractor(ten, three, LOW, &borrow_out);
     for (int i = 0; i < 8; i++)
         ASSERT_BIT_EQ(seven.bits[i], result.bits[i], "10-3=7");
     ASSERT_BIT_EQ(LOW, borrow_out, "10-3 no borrow");
 
     /* 0 - 1 = 255, borrow out */
-    byte zero = {{0,0,0,0,0,0,0,0}};
-    byte one  = {{0,0,0,0,0,0,0,1}};
-    byte ff   = {{1,1,1,1,1,1,1,1}};
+    byte zero = hexToByte("0x00");
+    byte one  = hexToByte("0x01");
+    byte ff   = hexToByte("0xFF");
     result = eightBitSubtractor(zero, one, LOW, &borrow_out);
     for (int i = 0; i < 8; i++)
         ASSERT_BIT_EQ(ff.bits[i], result.bits[i], "0-1 underflow");
     ASSERT_BIT_EQ(HIGH, borrow_out, "0-1 borrow");
 
     /* 5 - 5 = 0 */
-    byte five = {{0,0,0,0,0,1,0,1}};
-    byte expected_zero = {{0,0,0,0,0,0,0,0}};
+    byte five = hexToByte("0x05");
+    byte expected_zero = hexToByte("0x00");
     result = eightBitSubtractor(five, five, LOW, &borrow_out);
     for (int i = 0; i < 8; i++)
         ASSERT_BIT_EQ(expected_zero.bits[i], result.bits[i], "5-5=0");

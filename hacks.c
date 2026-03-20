@@ -41,3 +41,17 @@ byte hexToByte(char *hex){
 
     return result;
 }
+
+/**
+ * @brief converts a byte to decimal (0-255)
+ * 
+ * @param b the byte to convert
+ * @return int the decimal value
+ */
+int byteToDecimal(byte b){
+    int value = 0;
+    for(int i = 0; i < 8; i++){
+        value = (value << 1) | b.bits[i];
+    }
+    return value;
+}
