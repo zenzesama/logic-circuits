@@ -93,6 +93,7 @@ void edgeTriggeredDFlipFlopPC(edge_triggered_d_flip_flop_pc* ff, bit data, bit c
 
 byte hexToByte(char *hex);
 int byteToDecimal(byte b);
+void byteToHex(byte b, char out[5]);
 
 typedef struct{
     edge_triggered_d_flip_flop flip_flops[8];
@@ -102,5 +103,36 @@ eight_bit_counter newEightBitCounter(void);
 void tickEightBitCounter(eight_bit_counter* counter);
 byte getEightBitCounterValue(eight_bit_counter* counter);
 void resetEightBitCounter(eight_bit_counter* counter);
+
+void decoder3to8(bit s0, bit s1, bit s2, bit out[8]);
+bit eightToOneSelector(bit in[8], bit s0, bit s1, bit s2);
+
+typedef struct{
+    d_flip_flop latches[8];
+}ram8x1;
+ 
+ram8x1 newRam8x1(void);
+bit ram8x1Operation(ram8x1* ram, byte addr, bit data_in, bit write);
+
+typedef struct{
+    ram8x1 lanes[8];
+}ram8x8;
+ 
+ram8x8 newRam8x8(void);
+void writeRam8x8(ram8x8* ram, char* addr, byte data);
+byte readRam8x8(ram8x8* ram, char* addr);
+
+
+typedef struct {
+    d_flip_flop bits[8];
+} ram_cell;
+ 
+typedef struct {
+    ram_cell cells[65536];
+} ram64kx8;
+ 
+ram64kx8* newRam64kx8(void);
+void writeRam64kx8(ram64kx8* ram, char* addr_hi, char* addr_lo, byte data);
+byte readRam64kx8(ram64kx8* ram, char* addr_hi, char* addr_lo);
 
 #endif

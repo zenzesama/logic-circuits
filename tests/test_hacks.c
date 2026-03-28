@@ -127,15 +127,106 @@ static void test_hex_byte_roundtrip(void) {
     }
 }
 
+/* helper: assert byteToHex output matches expected string char by char */
+static void assert_hex_str(const char* expected, byte b, const char* label){
+    char out[5];
+    byteToHex(b, out);
+    for(int i = 0; i < 5; i++){
+        ASSERT_BIT_EQ(expected[i], out[i], label);
+    }
+}
+
+static void test_byte_to_hex_zero(void){
+    assert_hex_str("0x00", hexToByte("0x00"), "byteToHex 0x00");
+}
+
+static void test_byte_to_hex_max(void){
+    assert_hex_str("0xFF", hexToByte("0xFF"), "byteToHex 0xFF");
+}
+
+static void test_byte_to_hex_low_nibble_only(void){
+    assert_hex_str("0x0F", hexToByte("0x0F"), "byteToHex 0x0F");
+}
+
+static void test_byte_to_hex_high_nibble_only(void){
+    assert_hex_str("0xF0", hexToByte("0xF0"), "byteToHex 0xF0");
+}
+
+static void test_byte_to_hex_prefix(void){
+    char out[5];
+    byteToHex(hexToByte("0x42"), out);
+    ASSERT_BIT_EQ('0', out[0], "byteToHex prefix[0] is '0'");
+    ASSERT_BIT_EQ('x', out[1], "byteToHex prefix[1] is 'x'");
+}
+
+static void test_byte_to_hex_null_terminator(void){
+    char out[5];
+    byteToHex(hexToByte("0x42"), out);
+    ASSERT_BIT_EQ('\0', out[4], "byteToHex null terminator at [4]");
+}
+
+static void test_byte_to_hex_body_non_null(void){
+    char out[5];
+    byteToHex(hexToByte("0x42"), out);
+    ASSERT_BIT_EQ(1, out[0] != '\0', "byteToHex out[0] non-null");
+    ASSERT_BIT_EQ(1, out[1] != '\0', "byteToHex out[1] non-null");
+    ASSERT_BIT_EQ(1, out[2] != '\0', "byteToHex out[2] non-null");
+    ASSERT_BIT_EQ(1, out[3] != '\0', "byteToHex out[3] non-null");
+}
+
+static void test_byte_to_hex_patterns(void){
+    assert_hex_str("0x01", hexToByte("0x01"), "byteToHex 0x01");
+    assert_hex_str("0x2A", hexToByte("0x2A"), "byteToHex 0x2A");
+    assert_hex_str("0x55", hexToByte("0x55"), "byteToHex 0x55");
+    assert_hex_str("0x80", hexToByte("0x80"), "byteToHex 0x80");
+    assert_hex_str("0xAA", hexToByte("0xAA"), "byteToHex 0xAA");
+    assert_hex_str("0xCC", hexToByte("0xCC"), "byteToHex 0xCC");
+    assert_hex_str("0xDE", hexToByte("0xDE"), "byteToHex 0xDE");
+    assert_hex_str("0xBE", hexToByte("0xBE"), "byteToHex 0xBE");
+}
+
+static void test_byte_to_hex_roundtrip(void){
+    static const char digits[] = "0123456789ABCDEF";
+    for(int val = 0; val <= 255; val++){
+        char hex[5];
+        hex[0] = '0';
+        hex[1] = 'x';
+        hex[2] = digits[val >> 4];
+        hex[3] = digits[val & 0xF];
+        hex[4] = '\0';
+
+        char out[5];
+        byteToHex(hexToByte(hex), out);
+        for(int i = 0; i < 5; i++){
+            ASSERT_BIT_EQ(hex[i], out[i], "byteToHex roundtrip");
+        }
+    }
+}
+
 int main(void) {
+    /* hexToByte */
     test_hex_to_byte_basic();
     test_hex_to_byte_all_ones();
     test_hex_to_byte_pattern();
     test_hex_to_byte_lowercase();
+
+    /* byteToDecimal */
     test_byte_to_decimal_zero();
     test_byte_to_decimal_max();
     test_byte_to_decimal_patterns();
     test_hex_byte_roundtrip();
+
+    /* byteToHex */
+    test_byte_to_hex_zero();
+    test_byte_to_hex_max();
+    test_byte_to_hex_low_nibble_only();
+    test_byte_to_hex_high_nibble_only();
+    test_byte_to_hex_prefix();
+    test_byte_to_hex_null_terminator();
+    test_byte_to_hex_body_non_null();
+    test_byte_to_hex_patterns();
+    test_byte_to_hex_roundtrip();
+
     PRINT_SUMMARY("test_hacks");
     return _tests_failed;
 }

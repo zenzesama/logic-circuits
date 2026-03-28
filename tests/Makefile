@@ -9,7 +9,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -pedantic -I..
 
-SRCS = ../gates.c ../logic.c ../flipFlops.c ../print.c ../hacks.c
+SRCS = ../gates.c ../logic.c ../flipFlops.c ../print.c ../hacks.c ../ram.c
 
 TESTS = test_gates \
         test_adders \
@@ -17,7 +17,8 @@ TESTS = test_gates \
         test_memory \
         test_selector \
         test_adding_machine \
-		test_hacks
+		test_hacks \
+		test_ram
 
 .PHONY: run clean
 

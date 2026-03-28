@@ -66,3 +66,11 @@ I will be writing a "devlog" each commit explaining the changes, new additions, 
 
   ![eightBitCounter1](images/eightBitCounter1.png)
   ![eightBitCounter2](images/eightBitCounter2.png)
+
+- **(28 March, 2026)** *the ram is finally implemented!*
+  
+  After a stressful week of uni and making that website, I finally got the time to implement a RAM. As expected, it's some long code. Longest I've written so far I think. Not sure. I've made 3 variants. 8x1 normal one, 8x8 one with an API to use it, its built bu using 8 8x1 rams, and the last one, a 64K ram chip. Now I was not gonna make a 65536 or so selector and decoder, so I use a hybrid design of using flip-flops for storage and index directly for address decode. Is this faster? most definitely. Is this cheap memory wise? Maybe if I optimize it, it will be. I use malloc but the issue is that the 64k ram has is just a array of 65536 d type flip flops, and they are just a rs flip flop, and they are just a struct with 2 bits, q and ~q. So roughly it takes about 4MB space for a single RAM chip. This is not much but its heap memory + it will scale with time. I'll circle back to this in hopes of optimizing or migrating to a better system. I've pretty much finished the book, the later chapter are a bit more history and hardware oriented. I presume that I will make a full fledged microcontroller by the end of this, if I don't lose the motivation. If I want, I may work on this a bit more after that, maybe turn this into a my own tiny 8-bit os? But for now, the finishing line is to make a microcontroller. Up next in the book are op codes, essentially assembly language. It would be so fun, making a ALU and my own little language. I bough a new book btw, CS:APP. I read it's pdf a bit and it interested me, I had some money so I bought it! Lets see how it goes.
+  
+  ![ramFullScale](images/ram-full-scale.png)
+  ![8x1-ram](images/ram-8x1.png)
+  ![64k-ram](images/ram-64k.png)

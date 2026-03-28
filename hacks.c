@@ -55,3 +55,22 @@ int byteToDecimal(byte b){
     }
     return value;
 }
+
+/**
+ * @brief converts a byte to a hex string like "0x2B"
+ *
+ * @param b the byte to convert
+ * @param out caller-supplied buffer of at least 5 chars ("0x" + 2 hex digits + '\0')
+ *
+ * we convert the decimal value of the byte into two hex nibbles
+ * using a lookup table, then write them into the buffer with the "0x" prefix
+ */
+void byteToHex(byte b, char out[5]){
+    static const char digits[] = "0123456789ABCDEF";
+    int value = byteToDecimal(b);
+    out[0] = '0';
+    out[1] = 'x';
+    out[2] = digits[(value >> 4) & 0xF];
+    out[3] = digits[ value & 0xF];
+    out[4] = '\0';
+}
