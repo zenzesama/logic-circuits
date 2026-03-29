@@ -22,7 +22,7 @@ rs_flip_flop newRsFlipFlop(){
 }
 
 /**
- * @brief this simuates a single tick / change of input on the flip flop
+ * @brief this simulates a single tick / change of input on the flip flop
  * 
  * @param ff this is the pointer to the flip flop whose state is to be changed
  * @param r this is the new r value that is passed
@@ -48,7 +48,7 @@ void rsFlipFlop(rs_flip_flop* ff, bit r, bit s){
 }
 
 /**
- * @brief this initializes a new d type flip flop usind the previously defined rs flipflop with a defailt value of q = low and ~q = high
+ * @brief this initializes a new d type flip flop using the previously defined rs flipflop with a default value of q = low and ~q = high
  * 
  * @return d_flip_flop this is the returned d - flip flop
  */
@@ -59,7 +59,7 @@ d_flip_flop newDFlipFlop(){
 }
 
 /**
- * @brief this simuates a single tick / change of input on the flip flop
+ * @brief this simulates a single tick / change of input on the flip flop
  * 
  * @param ff this is the pointer to the flip flop whose state is to be changed
  * @param data this is the new data input that is passed

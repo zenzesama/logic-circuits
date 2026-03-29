@@ -104,13 +104,14 @@ void tickEightBitCounter(eight_bit_counter* counter);
 byte getEightBitCounterValue(eight_bit_counter* counter);
 void resetEightBitCounter(eight_bit_counter* counter);
 
+
 void decoder3to8(bit s0, bit s1, bit s2, bit out[8]);
 bit eightToOneSelector(bit in[8], bit s0, bit s1, bit s2);
 
 typedef struct{
     d_flip_flop latches[8];
 }ram8x1;
- 
+
 ram8x1 newRam8x1(void);
 bit ram8x1Operation(ram8x1* ram, byte addr, bit data_in, bit write);
 
@@ -134,5 +135,44 @@ typedef struct {
 ram64kx8* newRam64kx8(void);
 void writeRam64kx8(ram64kx8* ram, char* addr_hi, char* addr_lo, byte data);
 byte readRam64kx8(ram64kx8* ram, char* addr_hi, char* addr_lo);
+
+
+typedef struct {
+    edge_triggered_d_flip_flop_pc flip_flops[16];
+} sixteen_bit_counter;
+
+sixteen_bit_counter newSixteenBitCounter(void);
+void tickSixteenBitCounter(sixteen_bit_counter* counter);
+void getSixteenBitCounterValue(sixteen_bit_counter* counter, byte* hi, byte* lo);
+void jumpSixteenBitCounter(sixteen_bit_counter* counter, char* addr_hi, char* addr_lo);
+void resetSixteenBitCounter(sixteen_bit_counter* counter);
+
+
+typedef struct {
+    eight_bit_latch accumulator;
+    d_flip_flop carry_latch;
+    d_flip_flop zero_latch;
+} alu;
+
+alu newALU(void);
+void aluLoad(alu* a, byte data);
+byte aluGetAccumulator(alu* a);
+bit aluGetCarry(alu* a);
+bit aluGetZero(alu* a);
+void runALU(alu* a, char* opcode, byte operand);
+
+
+typedef struct {
+    eight_bit_latch opcode;
+    eight_bit_latch addr_hi;
+    eight_bit_latch addr_lo;
+} instruction_register;
+ 
+instruction_register newInstructionRegister(void);
+void loadIR(instruction_register* ir, char* opcode, char* addr_hi, char* addr_lo);
+byte irGetOpcode(instruction_register* ir);
+byte irGetAddrHi(instruction_register* ir);
+byte irGetAddrLo(instruction_register* ir);
+int  irGetAddress(instruction_register* ir);
 
 #endif

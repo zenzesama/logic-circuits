@@ -29,7 +29,7 @@ half_adder halfAdder(bit a, bit b){
 }
 
 /**
- * @brief this is a full ader made by using two half adders
+ * @brief this is a full adder made by using two half adders
  * 
  * @param a this is the first bit
  * @param b this is the second bit
@@ -37,7 +37,7 @@ half_adder halfAdder(bit a, bit b){
  * @return full_adder this is the returned full_adder structure in new state
  * 
  * we first initialize two half adders h1 and h2, then perform the necessary calculations.
- * Read diagram to unsderstand how this happens.
+ * Read diagram to understand how this happens.
  * This is similar to the half adder one, where we return the adder with new state.
  */
 full_adder fullAdder(bit a, bit b, bit carry_in){
@@ -111,7 +111,7 @@ byte notByte(byte byte_a){
  *      A - B = A + (~B) + 1
  * 
  * the final carry_out from the adder is inverted to produce borrow_out.
- * this allows to detecch underflow
+ * this allows to underflow
  */
 byte eightBitSubtractor(byte byte_a, byte byte_b, bit borrow_in, bit* borrow_out){
     byte b_invert = notByte(byte_b);
@@ -361,5 +361,111 @@ byte getEightBitCounterValue(eight_bit_counter* counter){
 void resetEightBitCounter(eight_bit_counter* counter){
     for(int i = 0; i < 8; i++){
         counter->flip_flops[i] = newEdgeTriggeredDFlipFlop();
+    }
+}
+
+/**
+ * @brief initializes a new 16-bit counter starting at 0
+ *
+ * @return sixteen_bit_counter the initialized counter
+ *
+ * uses edge_triggered_d_flip_flop_pc for all 16 flip-flops so that
+ * the Jump instruction can preset any bit to 0 or 1 via the clear/preset
+ * inputs, loading an arbitrary 16-bit address into the counter.
+ * FF0 is LSB (bit 0), FF15 is MSB (bit 15).
+ */
+sixteen_bit_counter newSixteenBitCounter(void) {
+    sixteen_bit_counter counter;
+    for(int i = 0; i < 16; i++) {
+        counter.flip_flops[i] = newEdgeTriggeredDFlipFlopPC();
+    }
+    return counter;
+}
+
+/**
+ * @brief increments the counter by one (one clock tick)
+ *
+ * @param counter pointer to the counter
+ *
+ * same ripple design as the 8-bit counter, extended to 16 stages.
+ * FF0 toggles every tick; each subsequent FF toggles on the falling
+ * edge of the previous FF's Q output.
+ */
+void tickSixteenBitCounter(sixteen_bit_counter* counter) {
+    bit saved_q[16];
+    for(int i = 0; i < 16; i++) {
+        saved_q[i] = counter->flip_flops[i].q;
+    }
+ 
+    bit q_bar_0 = counter->flip_flops[0].q_bar;
+    edgeTriggeredDFlipFlopPC(&counter->flip_flops[0], q_bar_0, LOW, LOW, LOW);
+    edgeTriggeredDFlipFlopPC(&counter->flip_flops[0], q_bar_0, HIGH, LOW, LOW);
+ 
+    for(int i = 1; i < 16; i++) {
+        bit prev_new_q = counter->flip_flops[i-1].q;
+        if(saved_q[i-1] == HIGH && prev_new_q == LOW) {
+            bit q_bar_i = counter->flip_flops[i].q_bar;
+            edgeTriggeredDFlipFlopPC(&counter->flip_flops[i], q_bar_i, LOW, LOW, LOW);
+            edgeTriggeredDFlipFlopPC(&counter->flip_flops[i], q_bar_i, HIGH, LOW, LOW);
+        }
+    }
+}
+
+/**
+ * @brief reads the current 16-bit counter value as two hex bytes
+ *
+ * @param counter pointer to the counter
+ * @param hi      output: high byte (bits 15–8) as a byte struct
+ * @param lo      output: low  byte (bits  7–0) as a byte struct
+ *
+ * FF15 is MSB, FF0 is LSB.
+ * hi->bits[0] is bit15, hi->bits[7] is bit8.
+ * lo->bits[0] is bit7,  lo->bits[7] is bit0.
+ */
+void getSixteenBitCounterValue(sixteen_bit_counter* counter, byte* hi, byte* lo) {
+    for(int i = 0; i < 8; i++) {
+        hi->bits[i] = counter->flip_flops[15 - i].q;
+        lo->bits[i] = counter->flip_flops[7  - i].q;
+    }
+}
+
+/**
+ * @brief loads a 16-bit address into the counter (used by Jump)
+ *
+ * @param counter  pointer to the counter
+ * @param addr_hi  high byte of the target address, e.g. "0x20"
+ * @param addr_lo  low  byte of the target address, e.g. "0x00"
+ *
+ * uses the preset/clear inputs of each flip-flop to force every bit
+ * to the required value, exactly as the book describes for the Jump
+ * instruction. after this call the counter will continue incrementing
+ * from the loaded address on the next tick.
+ */
+void jumpSixteenBitCounter(sixteen_bit_counter* counter, char* addr_hi, char* addr_lo) {
+    byte hi = hexToByte(addr_hi);
+    byte lo = hexToByte(addr_lo);
+ 
+    bit target[16];
+    for(int i = 0; i < 8; i++) {
+        target[i] = lo.bits[7 - i];
+        target[i + 8] = hi.bits[7 - i];
+    }
+ 
+    for(int i = 0; i < 16; i++) {
+        bit preset = target[i];
+        bit clear = notGate(target[i]);
+        edgeTriggeredDFlipFlopPC(&counter->flip_flops[i],
+                                 LOW, LOW, preset, clear);
+    }
+}
+
+/**
+ * @brief resets the program counter back to 0x0000
+ *
+ * @param counter pointer to the counter
+ */
+void resetSixteenBitCounter(sixteen_bit_counter* counter) {
+    for(int i = 0; i < 16; i++) {
+        counter->flip_flops[i] = newEdgeTriggeredDFlipFlopPC();
     }
 }
