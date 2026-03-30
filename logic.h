@@ -175,4 +175,23 @@ byte irGetAddrHi(instruction_register* ir);
 byte irGetAddrLo(instruction_register* ir);
 int  irGetAddress(instruction_register* ir);
 
+
+typedef enum {
+    CU_RUNNING = 0,
+    CU_HALTED  = 1
+} cu_status;
+ 
+typedef struct {
+    sixteen_bit_counter *pc;
+    ram64kx8 *ram;
+    instruction_register *ir;
+    alu *a;
+    int halted;
+} control_unit;
+ 
+control_unit* newCU(void);
+void freeCU(control_unit* cu);
+void loadProgram(control_unit* cu, int* program, int length);
+cu_status stepCU(control_unit* cu);
+
 #endif

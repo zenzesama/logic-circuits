@@ -75,6 +75,10 @@ I will be writing a "devlog" each commit explaining the changes, new additions, 
   ![8x1-ram](images/ram-8x1.png)
   ![64k-ram](images/ram-64k.png)
 
-- **(29 March, 2026)** *alu and an ir*
+- **(29 March, 2026)** *added alu and an Instruction Register*
   
   These two components were't that hard but fundamental. Alu specially was interesting to code, it reminds me of a game named TIS-100. Its essentially a puzzle game to teach you assembly, it has these boxes which are essentially accumulators and can move data from all 4 ends. Fun game. Next up is the control unit and the CPU. The project is pretty much done, feels good! I also deleted the tests for counters and ram because they already have demo's. Doesn't make sense having both tests and demo's. Also, I think demos are for bigger components and tests are got smaller components. Oh, I also got a spell checker extension because my typing is really weird, so now I will be fixing and hopefully making less typos.
+
+- **(30 March, 2026)** *added control unit*
+  
+  Most complex component yet, and the most satisfying as well. And I missed my first class this morning because I was up at night working on this. Its has the main purpose of loading the program, using the instruction register and executing the program. Really feels like I've made something now lol. Next up is the cpu! 
