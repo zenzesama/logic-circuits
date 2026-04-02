@@ -1,7 +1,7 @@
 #ifndef TEST_FRAMEWORK_H
 #define TEST_FRAMEWORK_H
 
-extern int printf(const char* format, ...);
+#include <stdio.h>
 
 static int _tests_run = 0;
 static int _tests_failed = 0;

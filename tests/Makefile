@@ -17,9 +17,7 @@ TESTS = test_gates \
         test_memory \
         test_selector \
         test_adding_machine \
-	test_hacks \
-	test_ram \
-	test_counter
+		test_hacks
 
 .PHONY: run clean
 

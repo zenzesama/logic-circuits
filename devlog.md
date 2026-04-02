@@ -82,3 +82,7 @@ I will be writing a "devlog" each commit explaining the changes, new additions, 
 - **(30 March, 2026)** *added control unit*
   
   Most complex component yet, and the most satisfying as well. And I missed my first class this morning because I was up at night working on this. Its has the main purpose of loading the program, using the instruction register and executing the program. Really feels like I've made something now lol. Next up is the cpu! 
+
+- **(2 April, 2026)** *added cpu api, updated libraries and reduced memory usage by 1/4*
+  
+  CPU was not hard, its just a wrapper around the current individual components. I added a demo with 3 test programs which all work! Very proud of this little project! I also started using stdint to reduce the size of int that we are using, now all malloc uses should allocate 1/4th of what they were doing beforehand. This was happening because by default, enum allocates normal integers, and I was using it for bits, so I was allocating a lot of redundant space. Fixed this by using unit_8, a simple 8 bit integer. Its the minimum I can do without going into much hassel. THe 64 kb ram was allocating almost 4MB before this, now it allocates only 1MB. Quite an improvement. next up I want to refactor and organize the project into some properly labelled folders. Lets see when I get the time for that.

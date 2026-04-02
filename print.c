@@ -10,10 +10,7 @@
  */
 #include "logic.h"
 
-/**
- * @brief this imports the putchar function from stdio.h
- */
-extern int putchar(int);
+#include <stdio.h>
 
 /**
  * @brief this puts a single bit value on the terminal as a char.

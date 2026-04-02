@@ -8,9 +8,9 @@
  * @copyright Copyright (c) 2026
  */
 
+#include <stdio.h>
 #include "logic.h"
 
-extern int printf(const char*, ...);
 
 static void printIR(instruction_register* ir) {
     byte op = irGetOpcode(ir);

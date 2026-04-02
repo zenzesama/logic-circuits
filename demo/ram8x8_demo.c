@@ -8,9 +8,8 @@
  * @copyright Copyright (c) 2026
  */
 
+#include <stdio.h>
 #include "logic.h"
-
-extern int printf(const char*, ...);
 
 int main(void){
     printf("8x8 RAM Demonstration\n");

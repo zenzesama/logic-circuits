@@ -1,7 +1,11 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
-typedef enum {LOW = 0, HIGH = 1} bit;
+#include <stdint.h>
+
+typedef uint8_t bit;
+#define LOW ((bit)0)
+#define HIGH ((bit)1)
 
 typedef struct{
     bit bits[8];
@@ -193,5 +197,26 @@ control_unit* newCU(void);
 void freeCU(control_unit* cu);
 void loadProgram(control_unit* cu, int* program, int length);
 cu_status stepCU(control_unit* cu);
+
+
+typedef struct {
+    control_unit* cu;
+    int cycles;
+    int debug;
+} cpu;
+
+cpu* newCPU(void);
+void freeCPU(cpu* c);
+void resetCPU(cpu* c);
+void cpuSetDebug(cpu* c, int debug);
+void cpuLoad(cpu* c, int* program, int length);
+byte cpuGetAccumulator(cpu* c);
+int cpuGetPC(cpu* c);
+bit cpuGetCarry(cpu* c);
+bit cpuGetZero(cpu* c);
+byte cpuReadRAM(cpu* c, int addr);
+int cpuGetCycles(cpu* c);
+cu_status stepCPU(cpu* c);
+int runCPU(cpu* c);
 
 #endif

@@ -9,9 +9,8 @@
  * 
  */
 
+#include <stdio.h>
 #include "logic.h"
-
-extern int printf(const char*, ...);
 
 int main(void){
     printf("8-Bit Counter Simulation\n");

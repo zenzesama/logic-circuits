@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 #include "logic.h"
+#include <stdio.h>
 
 /**
  * @brief decodes a 3-bit address into 8 active-HIGH output lines

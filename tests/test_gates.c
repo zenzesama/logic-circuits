@@ -9,8 +9,8 @@
  * 
  */
 
+#include "logic.h"
 #include "test_framework.h"
-#include "../logic.h"
 
 static void test_and_gate(void) {
     ASSERT_BIT_EQ(LOW,  andGate(LOW,  LOW),  "AND 0,0");

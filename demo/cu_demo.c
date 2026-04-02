@@ -8,9 +8,8 @@
  * @copyright Copyright (c) 2026
  */
 
+#include <stdio.h>
 #include "logic.h"
-
-extern int printf(const char*, ...);
 
 static void printState(control_unit* cu){
     byte acc = aluGetAccumulator(cu->a);

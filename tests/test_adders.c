@@ -1,6 +1,6 @@
 /**
  * @file test_adders.c
- * @author zene (zenzesama@gmail.com)
+ * @author zenzesama (zenzesama@gmail.com)
  * @brief Unit tests for half adder, full adder, 8-bit adder, and 8-bit subtractor.
  * @version 0.1
  * @date 2026-03-15
