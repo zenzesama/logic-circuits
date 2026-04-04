@@ -48,13 +48,13 @@ The simulator is organized into layers, each built on top of the previous:
 
 Every call to `stepCU()` performs one complete fetch-execute cycle, broken into four sub-steps:
 
-**1. Fetch — opcode** `PC → IR.opcode`, then `PC++`
+**1. Fetch opcode** `PC → IR.opcode`, then `PC++`
 
-**2. Fetch — address** `PC → IR.addr_hi`, `PC++`, then `PC → IR.addr_lo`, `PC++`
+**2. Fetch address** `PC → IR.addr_hi`, `PC++`, then `PC → IR.addr_lo`, `PC++`
 
-**3. Decode** — the CU reads the opcode from the IR and selects the appropriate operation.
+**3. Decode** the CU reads the opcode from the IR and selects the appropriate operation.
 
-**4. Execute** — depending on the opcode:
+**4. Execute** depending on the opcode:
 - `LOD` / `STO`: the CU reads or writes RAM directly, bypassing the ALU
 - `ADD` / `SUB` / `ADC` / `SBB`: the CU reads the operand from RAM and passes it to the ALU along with the opcode; the ALU updates the accumulator, carry latch, and zero latch
 - `JMP` / `JZ` / `JC` / `JNZ` / `JNC`: the CU checks the ALU flags and loads the jump address into the PC via preset/clear on its flip-flops if the condition is met
@@ -168,6 +168,6 @@ The 64KB RAM allocates ~1MB on the heap at startup (65,536 cells × 8 flip-flops
 
 ## Development Notes
 
-Much of this code was written with AI assistance (Claude, free tier). That doesn't mean copy-paste. I read everything, made changes in a lot of places, and the core logic and architecture decisions are mine. Tests and demos leaned on AI, still with supervision. The full making is documented in `devlog.md`.
+Much of this code was written with AI assistance (Claude, free tier). That doesn't mean copy-paste. I read everything, made changes in a lot of places, and the core logic and architecture decisions are mine. Tests and demos leaned on AI, still with supervision. Funny enough, this project is big enough that AI tends to make mistakes and not implement new stuff in the most efficient way possible! The full making is documented in `devlog.md`.
 
 If I had to put a number on it: ~60% AI. I too am an AI slop hater.
