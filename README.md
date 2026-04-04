@@ -79,6 +79,7 @@ make all # build all demos
 ./ram8x8
 ./ram64k
 ./ir
+make clean  # remove binaries
 ```
 ---
 
