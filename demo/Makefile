@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I..
 
-COMMON = ../logic.c ../gates.c ../flipFlops.c ../print.c ../hacks.c ../ram.c ../alu.c ../ir.c ../cu.c ../cpu.c
+COMMON = ../src/logic.c ../src/gates.c ../src/flipFlops.c ../src/print.c ../src/hacks.c ../src/ram.c ../src/alu.c ../src/ir.c ../src/cu.c ../src/cpu.c
 
 ram_8x8: ram8x8_demo.c $(COMMON)
 	$(CC) $(CFLAGS) ram8x8_demo.c $(COMMON) -o ram_8x8
@@ -26,6 +26,8 @@ cu: cu_demo.c $(COMMON)
 
 cpu: cpu_demo.c $(COMMON)
 	$(CC) $(CFLAGS) cpu_demo.c $(COMMON) -o cpu
+
+all: ram_8x8 ram_64k counter8 counter16 alu ir cu cpu
 
 clean:
 	rm -f counter8 counter16 ram_8x8 ram_64k alu ir cu cpu

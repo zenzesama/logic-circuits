@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief helper function that directly maps hex characters to their values

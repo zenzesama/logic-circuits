@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 #include "test_framework.h"
 
 /* Helper: compare two bytes, report failure per-bit with a label prefix */

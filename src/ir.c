@@ -21,7 +21,7 @@
  * once the PC has stepped through the 3 bytes in RAM.
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 
 /**

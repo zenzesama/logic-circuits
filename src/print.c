@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2026
  * 
  */
-#include "logic.h"
 
+#include "../include/logic.h"
 #include <stdio.h>
 
 /**

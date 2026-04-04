@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief this initializes a new rsFlipFlop with the default value of q = low and ~q = high

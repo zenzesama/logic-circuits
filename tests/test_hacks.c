@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 #include "test_framework.h"
 
 static void test_hex_to_byte_basic(void) {

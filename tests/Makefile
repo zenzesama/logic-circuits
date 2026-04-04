@@ -9,7 +9,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -pedantic -I..
 
-SRCS = ../gates.c ../logic.c ../flipFlops.c ../print.c ../hacks.c ../ram.c
+SRCS = ../src/gates.c ../src/logic.c ../src/flipFlops.c ../src/print.c ../src/hacks.c ../src/ram.c
 
 TESTS = test_gates \
         test_adders \

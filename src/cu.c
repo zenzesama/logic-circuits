@@ -40,7 +40,7 @@
  *   0xFF  HLT — set halted flag, return CU_HALTED
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 #include <stdlib.h>
 
 /**

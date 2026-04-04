@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief this is a half adder that takes in two bits and returns the half adder with modified state

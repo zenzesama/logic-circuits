@@ -10,7 +10,7 @@
  */
 
 #include <stdio.h>
-#include "logic.h"
+#include "../include/logic.h"
 
 int main(void){
     printf("8-Bit Counter Simulation\n");

@@ -15,7 +15,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief prints the current state of cpu to stdout

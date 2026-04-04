@@ -9,7 +9,7 @@
  */
 
 #include <stdio.h>
-#include "logic.h"
+#include "../include/logic.h"
 
 
 static void printIR(instruction_register* ir) {

@@ -9,7 +9,7 @@
  */
 
 #include <stdio.h>
-#include "logic.h"
+#include "../include/logic.h"
 
 int main(void) {
     printf("16-Bit Program Counter Demonstration\n");

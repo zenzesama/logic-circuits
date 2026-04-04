@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 #include "test_framework.h"
 
 static void test_and_gate(void) {

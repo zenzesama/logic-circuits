@@ -22,7 +22,7 @@
  * The carry and zero latches are NOT updated by LOD/STO.
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief returns HIGH if all 8 bits of b are LOW, else LOW

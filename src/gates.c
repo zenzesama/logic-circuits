@@ -1,7 +1,7 @@
 /**
  * @file gates.c
  * @author zenze (zenzesama@gmail.com)
- * @brief this file contaisn the implementation of all logic gates
+ * @brief this file contains the implementation of all logic gates
  * @version 0.1
  * @date 2026-02-08
  * 
@@ -9,7 +9,7 @@
  * 
  */
 
-#include "logic.h"
+#include "../include/logic.h"
 
 /**
  * @brief this is a simple "and gate" using a truth table

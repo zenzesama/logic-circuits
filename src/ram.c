@@ -9,8 +9,8 @@
  * 
  */
 
+#include "../include/logic.h"
 #include <stdlib.h>
-#include "logic.h"
 #include <stdio.h>
 
 /**

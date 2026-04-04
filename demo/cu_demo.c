@@ -9,7 +9,7 @@
  */
 
 #include <stdio.h>
-#include "logic.h"
+#include "../include/logic.h"
 
 static void printState(control_unit* cu){
     byte acc = aluGetAccumulator(cu->a);
